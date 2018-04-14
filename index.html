@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>JavaScript RSA Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="bin/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+
+        // Call this code when the page is done loading.
+        $(function () {
+
+            // Run a quick encryption/decryption when they click.
+            $('#testme').click(function () {
+
+                // Encrypt with the public key...
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey($('#pubkey').val());
+                var encrypted = encrypt.encrypt($('#input').val());
+                $('#encrypt').val(encrypted);
+
+                // Decrypt with the private key...
+                var decrypt = new JSEncrypt();
+                decrypt.setPrivateKey($('#privkey').val());
+                var uncrypted = decrypt.decrypt(encrypted);
+
+                $('#decrypt').val(uncrypted);
+
+                // Now a simple check to see if the round-trip worked.
+                if (uncrypted !== $('#input').val()) {
+                    $('#error').html('Something went wrong....');
+                }
+            });
+        });
+    </script>
+    <style>
+        #main-wrap {
+            background-color: #D9D9D9;
+        }
+
+        #sidebar {
+            background-color: #d2d2d2;
+        }
+
+        #content-wrap {
+            background-color: #c5c5c5;
+        }
+
+        /* sizes */
+
+        #main-wrap>div {
+            min-height: 450px;
+        }
+
+
+        #main-wrap>div {
+            min-height: 450px;
+        }
+
+        #main-wrap {
+            /* overflow to handle inner floating block */
+            overflow: hidden;
+        }
+
+        #sidebar {
+            float: left;
+            width: 40%;
+        }
+
+        #content-wrap {
+            float: right;
+            width: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main-wrap">
+        <div id="sidebar">
+            <h3>Text to encrypt:</h3>
+            <textarea id="input" name="input" type="text" rows=4 cols=70>This is a test!</textarea>
+            <br/>
+            <input id="testme" type="button" value="Encrypt" />
+            <br/>
+            <h3>Encrypt</h3>
+            <textarea id="encrypt" name="encrypt" type="text" rows=10 cols=80></textarea>
+            <h3>Decrypt</h3>
+            <textarea id="decrypt" name="encrypt" type="text" rows=4 cols=80></textarea>
+            <h3 style="color: red">Error :
+                <span id="error"></span>
+            </h3>
+        </div>
+        <div id="content-wrap">
+            <label for="privkey">Private Key</label>
+            <br/>
+            <textarea id="privkey" rows="15" cols="100">-----BEGIN RSA PRIVATE KEY-----
+                    MIIJKQIBAAKCAgEAzEGAsvjuWgAv8CM4NKy7z+ONop+H+lmkaLN0GOpJZxuzZvDK
+                    50AbIaH0pxye9ZSj5fCaTxcLXXbaXhlC9hH/xoGFyKvSZ+Z9FItkUISyLmMsPpI2
+                    etLmUBmS6g7JelJl27xawtd9Cmv0XxxtuY9bY6i4or/RYModp/cuhAuF08jHIUQZ
+                    BlrSgY2vRob7p1QYyROXNRgO/vKjNpm1o7b+pFsoEOKw58hVXKURFZKI3JwlIPAv
+                    y26Ydc3xvymXYrrL/9bl1GRWpjwNeDucEw51UGyMJM264GBXngSBlwIKwcVtOP2C
+                    uyVX7E+Hsoq+I98C6xtT9+P2lurR86STkzlgJrZVlwxZDLvfUEqANr+tY+wVeITj
+                    /yFWnyZq/xGoORc1wpJ2R/QovDvDjf6PJfwFxf1eQfrkSG0ruKn7R0g6e8h1bV9E
+                    T+oip7PT4CmVD6fl1ud1oWB+5MrNpXuLhINyq/Xf7sorekYeIi4JWn1OXKUpcbJx
+                    qbdBdM9gy3PRVKv0MWA7iCyKjDUB0q/gqLL7n/VavwDMga4PM5hEKdt4NneBt8y2
+                    hXlkf8NpjIVtN4DVQClLyaB9h8lUMfX7GScH0hHXxY7t3HwhfQUYFy1Y+ycrl+bP
+                    9PljrIqJCHaN0ZFvBo69CkvQJlNsWDUBatXkcucCm17ASCMgrEVFctX49IcCAwEA
+                    AQKCAgAINypCCJktrYxAEGqWU8xKFFECFYCWpTxjqbQlvGavawHQRicjHgT5WVZJ
+                    0nDiV9Qvz3mlbLvcSoeF+WYkF50+Er+azq5r1214ghLK2kuAaiTBb4gZcJoq5pxu
+                    JaIc9Wt7ZxwPcjNpU+ZEXRRcvlNissqaYTS+u+Jtexe33+7GEfFQeTi4dLa610QR
+                    hiRhGpTUoaEXVZxkzMWb0JrpttaPLctywmtzJy+nxkvlnjs7BFzJ8l85w30GX/41
+                    PisEoZbK943O+SozDX9NMriYW6CEV5lbcZruo3FivbOoq0BbguFdxXSYqmva6Wf/
+                    2mzDbJjlc/fwpI6qi09eiWQWK9yeH4N7EDhYcJ/r3AMvKkeb4WrZUJSb8wXmDPP7
+                    KBvABG+XaIfe3kMNG+WUR0eVv7JhinkRfNmX4THQ3+jY5NFjRjbbSQAgSUjHksPo
+                    UcGK+UJ8+7Lk95kD0ROU6n4p18/6D3rl11/Q5PbOPkP3nHSCPt2TxVMRWlrKJPT/
+                    TnSYgI/1IvZIpY8189h+bDOWTEeJ5ZNC3Y4yXrN9I/6ag1X8zEZFwHTcASsFAVfx
+                    GVsnhpTnon2o2J1tiicdTjGJbODGNu2aBemDAeJEIFo/20W3nubIQOkwR7qWmEKk
+                    gndT6TcCtCNT7Jr51NNqZz8F81nW0Gdjb8GWUY7sR6ssvDbw4QKCAQEA/EK8NQcD
+                    Roc0X05gOuNcPTTAOVubrWI5uD65zVL3UdzxK8++ZKkuln+maxV1JI/WIXzQerbS
+                    HQgqCgFO4oB4ZHFR/UyvmWnQ5M726x91NRH5F4DfP+SaejHGhk0gLqW8l/I5ggm+
+                    3duGxZZErEEnPbIQKFXPFmgD8uUx4VSMmdVfZb42VUWiYIo+het4Tag+J8phfWTL
+                    XgjaaLZzRYhifXfC93ISiLjzhKN9mS03yn/0ziYbeTiMougydjm9D83QzNmj3uMA
+                    zGgsJIqEsOkaDHJAbh21RM2Y8PyzmEWuGCRElPo3u6jm9yHvdIz+iPnZGJbuArWj
+                    BJ059TlGVq0lRQKCAQEAz0iZ/wBlCt54xNRMFQeWJqYvOLMRhaULat4tj81H9+K9
+                    MFXLZJSXdZx1SIOw6VFNAhXj6Yqfm7mxa126eCbGcKDm9BaUIseEf28NNbt04iz/
+                    AhSMRt5UNkBjOVCeBWBe6OgkKaucpIBzSrYbmkQb03o7k4t4/CAX7UUwWcfbYbYo
+                    UrpY2Tmx+3b4UinHIlS5fQnpq7Pb6B+dN7x5aHACX4TnXDNPx/nOo0t0L9GWqE55
+                    pHEbevUi0IHOCWKcV3+g9V/u2Hz6bx1YZGa0hf7xXCRAlOoSjdlxuIFhMQqHpUsn
+                    csP7W9Eo2UGMnuh1ZKIit6z0iDo5mMKWk7GfJ4ixWwKCAQAE8zJKQBb6XVDTxe/x
+                    d+Cpes2C0p9daZ4EVYbD1qrvukwpNexggUlevqZ/V25zBzeGdLKKlefNlgltJNVt
+                    cGPsZKTdOZIAiqkEtGL3/igIoI+ovGilElFNsIhavkyxXaMzwBcMzDAonlQosGgs
+                    kSK5/TJ/+B8WK3hYXdL6vvP7WMqEbpUWW0Vya4QKkLJNo82Ebl43XbD36WiPwXTF
+                    moWEPMNgo6ZldGui4KpoRRDhMl2VZf4IBOoNkEzdMQjatIkyW9rxVrb/S9QB643r
+                    Asf2Eo/dGUwjS32CzRKhHEzsQFnwKnDJh+jwVIQkX1fnTC/MYbnN586JGqS2gSc2
+                    MDOZAoIBAQCgiJXbjC61ED9wEQsrbki3fhUsUGLNolkJVzDqIg4OySfEe22eZAY5
+                    LAcZNgSZbkG5z8JHaPjb3iCuClUUINOm/rZfa+0mUmcnWpZceuW3FSoaLlfFuwJ1
+                    UcCG7wyzFUPsFX2MWEBklqazwf32p7D1Q8FIL8hvW1usgt1DaylYr37jMzcEZU6W
+                    djkzSO/UgtF1KWwzcoRpbbKRLALLA5SS7ZdRLNwpACstBI7jSeroRn6nAIJL4/Ym
+                    jaFIW3rBuTKrVrTgLUq3K379ox1EeYHr3pe1vOLJwRH11x2yoXkUZvQSSf4tyftc
+                    5wtFNrtUSM2ieuyXZKCe0nVTxUiBkbfpAoIBAQCPK8K2x4B6K/EKCltfm0P7+ckv
+                    dGbl+NxyodkwBGvdjNqhg0TA4Ccl29jM/wBZP4HALADoPZqUswzFrD08Xz3k77jY
+                    /3flxH5kjL73/fJg0HPinJMybJIQh+b1x5MHi8wvR4/zvAmeKHMxgCVkKAYlw2tc
+                    ysp/3XfNSCdKrPN9VZrLPlQtyAzNXxp/AO/q5/N8XHfsblyEoEo9Ngl6OHN4nvp5
+                    k+1+uQfxyOFAdjSNjzokqgRmU3rGSYGUsaL4fjD9dX1Xi7sNYTtBk56z/9ieZY1p
+                    kVNJqxKbx+fZDOBOVi3uRT37k4f3JFWaf0a1/Qji3Whp0mN4QS7jkeCR42TM
+                    -----END RSA PRIVATE KEY-----</textarea>
+            <br/>
+            <label for="pubkey">Public Key</label>
+            <br/>
+            <textarea id="pubkey" rows="15" cols="100">-----BEGIN PUBLIC KEY-----
+                    MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBtfj1rbABcJ5wiRnuoj6uT
+                    N3QO27/xqoAZS5QYND+43IPqbODULdghz6btdknTqEn0uXkJvGxJPMUybEsqmTAv
+                    pUlHCNHoyrQ+NggN/qhJBg4AoTxPJ9ZaqOBRQcUYUf3/mdMvCtXxFjVAPVimsgdI
+                    QBNgmUIz/H520202hhPU6cdD/72jlwY5XxeNpmJ1nKPvxNZJRAcPnRD0oxfrhaWR
+                    9CFU2oKWAzDm2FLQ506LJU+ZKUnfKM2949JXk4UZNxv7sydN+bObXfy3Qve317d5
+                    6sh2DxST9S0HYvOOmTtRYw3LHnJixBBu5nyUS+zR79vkufa5G1bTl9FN4igfpae/
+                    AgMBAAE=
+                    -----END PUBLIC KEY-----</textarea>
+            <br/>
+        </div>
+    </div>
+</body>
+
+</html>
